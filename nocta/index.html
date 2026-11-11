@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nocta Observatory Retreat | Sleep Under the Milky Way</title>
+<meta name="description" content="Nocta is a dark-sky retreat in the mountains of northern Luzon. Stargazing, guided astronomy and quiet cabins, far from city light.">
+<style>
+:root{
+  --bg:#f3ecdf;--ink:#2a2233;--muted:#6b6275;--accent:#c4552d;--card:#ffffffb3;
+  --sky1:#f6c9a0;--sky2:#e8a98f;--sky3:#8c7aa8;--m1:#6f5d86;--m2:#4d3f66;--m3:#2f2542;--moon:#fff6e0;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#07060f;--ink:#f1ecf7;--muted:#a69fb8;--accent:#ffb36b;--card:#ffffff10;
+  --sky1:#2b1d4a;--sky2:#140f2b;--sky3:#07060f;--m1:#1c1533;--m2:#120d24;--m3:#0a0716;--moon:#fff3d6}}
+:root[data-theme="dark"]{
+  --bg:#07060f;--ink:#f1ecf7;--muted:#a69fb8;--accent:#ffb36b;--card:#ffffff10;
+  --sky1:#2b1d4a;--sky2:#140f2b;--sky3:#07060f;--m1:#1c1533;--m2:#120d24;--m3:#0a0716;--moon:#fff3d6}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.6;overflow-x:hidden}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:400;line-height:1.1;margin:0}
+#bar{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:3px;width:100%;background:var(--accent);transform-origin:0 50%;transform:scaleX(0);z-index:20}
+.brand{position:fixed;top:calc(env(safe-area-inset-top,0px) + 16px);left:20px;z-index:15;font:600 13px/1 system-ui,sans-serif;letter-spacing:.3em;color:#fff;mix-blend-mode:difference}
+/* HERO */
+.hero{height:170vh;position:relative}
+.stick{position:sticky;top:0;height:100vh;overflow:hidden;background:linear-gradient(180deg,var(--sky3),var(--sky2) 55%,var(--sky1))}
+#stars{position:absolute;inset:0;width:100%;height:100%}
+.moon{position:absolute;left:62%;top:22%;width:clamp(90px,16vw,180px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff,var(--moon) 60%,#e3cf9f);box-shadow:0 0 80px 30px #ffe9b855;transform:translateY(calc(var(--p,0)*-18vh))}
+.ridge{position:absolute;left:-5%;width:110%;bottom:-2px}
+.r1{color:var(--m1);height:46%;transform:translateY(calc(var(--p,0)*-6vh))}
+.r2{color:var(--m2);height:38%;transform:translateY(calc(var(--p,0)*-2vh))}
+.r3{color:var(--m3);height:28%;transform:translateY(calc(var(--p,0)*6vh))}
+.hero-copy{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px;color:#fff;opacity:calc(1 - var(--p,0)*1.6);transform:translateY(calc(var(--p,0)*-10vh)) scale(calc(1 + var(--p,0)*.15))}
+.hero-copy h1{font-size:clamp(44px,10vw,120px);letter-spacing:-.02em;text-shadow:0 4px 40px #0006}
+.hero-copy p{max-width:36ch;margin:18px 0 0;font-size:clamp(15px,2vw,19px);opacity:.9}
+.hint{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);left:0;right:0;text-align:center;color:#fff;font-size:12px;letter-spacing:.25em;text-transform:uppercase;opacity:calc(1 - var(--p,0)*6)}
+/* STORY */
+.story{height:400vh;position:relative;background:var(--bg)}
+.story .stick{background:var(--bg);display:grid;place-items:center;padding:24px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,6vw,80px);align-items:center;max-width:1000px;width:100%}
+.steps{position:relative;min-height:220px}
+.step{position:absolute;inset:0 0 auto 0;opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s}
+.step.on{opacity:1;transform:none}
+.step small{color:var(--accent);letter-spacing:.2em;font-size:12px}
+.step h2{font-size:clamp(30px,5vw,54px);margin:10px 0 14px}
+.step p{color:var(--muted);margin:0;max-width:38ch}
+.scene{perspective:900px;display:grid;place-items:center;height:300px}
+.cube{width:170px;height:170px;position:relative;transform-style:preserve-3d;transform:rotateX(calc(var(--s,0)*140deg - 20deg)) rotateY(calc(var(--s,0)*540deg))}
+.face{position:absolute;inset:0;display:grid;place-items:center;font-size:42px;border:1px solid var(--accent);background:var(--card);backdrop-filter:blur(6px);box-shadow:inset 0 0 40px #ffb36b22}
+.f1{transform:translateZ(85px)}.f2{transform:rotateY(90deg) translateZ(85px)}.f3{transform:rotateY(180deg) translateZ(85px)}
+.f4{transform:rotateY(-90deg) translateZ(85px)}.f5{transform:rotateX(90deg) translateZ(85px)}.f6{transform:rotateX(-90deg) translateZ(85px)}
+/* CARDS */
+section.pad{padding:clamp(70px,12vw,140px) 24px;max-width:1000px;margin:0 auto}
+.pad h2{font-size:clamp(32px,6vw,60px);margin-bottom:36px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.card{background:var(--card);border:1px solid #ffffff1f;border-radius:18px;padding:26px;opacity:0;transform:translateY(40px);transition:opacity .8s,transform .8s}
+.card.in{opacity:1;transform:none}
+.card h3{font-size:24px;margin-bottom:8px}.card p{margin:0;color:var(--muted)}
+.cta{text-align:center;padding:clamp(80px,14vw,160px) 24px;background:linear-gradient(180deg,var(--bg),var(--sky2))}
+.cta h2{font-size:clamp(34px,7vw,72px);margin-bottom:24px}
+.btn{display:inline-block;padding:16px 34px;border-radius:99px;background:var(--accent);color:#1b1020;font-weight:600;text-decoration:none;transition:transform .3s,box-shadow .3s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 12px 40px #ffb36b55}
+footer{padding:28px 24px calc(28px + env(safe-area-inset-bottom,0px));text-align:center;font-size:13px;color:var(--muted);background:var(--sky2)}
+@media (max-width:700px){.grid{grid-template-columns:1fr}.scene{height:200px;order:-1}.cube{width:110px;height:110px}
+.f1{transform:translateZ(55px)}.f2{transform:rotateY(90deg) translateZ(55px)}.f3{transform:rotateY(180deg) translateZ(55px)}.f4{transform:rotateY(-90deg) translateZ(55px)}.f5{transform:rotateX(90deg) translateZ(55px)}.f6{transform:rotateX(-90deg) translateZ(55px)}
+.face{font-size:30px}.steps{min-height:200px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.step,.card{transition:none}}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div class="brand">NOCTA</div>
+
+<header class="hero" id="top">
+  <div class="stick">
+    <canvas id="stars" aria-hidden="true"></canvas>
+    <div class="moon" role="img" aria-label="Glowing full moon rising above the mountains"></div>
+    <svg class="ridge r1" viewBox="0 0 1200 300" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 300V160l140-70 150 90 170-120 190 110 160-80 170 100 220-90v300z"/></svg>
+    <svg class="ridge r2" viewBox="0 0 1200 300" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 300V190l180-80 140 70 200-100 160 90 190-60 150 70 180-50v270z"/></svg>
+    <svg class="ridge r3" viewBox="0 0 1200 300" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 300V210l200-60 180 60 220-80 200 70 200-40 200 50v90z"/></svg>
+    <div class="hero-copy">
+      <h1>Sleep under the Milky Way</h1>
+      <p>A dark-sky mountain retreat, far from the city’s glow.</p>
+    </div>
+    <div class="hint">Scroll</div>
+  </div>
+</header>
+
+<section class="story" id="story" aria-label="How a night at Nocta unfolds">
+  <div class="stick">
+    <div class="grid">
+      <div class="steps">
+        <div class="step on"><small>01 · DUSK</small><h2>Arrive as the light fades</h2><p>Settle into a quiet cabin and watch the valley turn from gold to violet.</p></div>
+        <div class="step"><small>02 · NIGHT</small><h2>Meet the sky</h2><p>Guided telescope sessions reveal planets, nebulae and star clusters you can’t see from town.</p></div>
+        <div class="step"><small>03 · DAWN</small><h2>Wake above the clouds</h2><p>Hot coffee, a sea of fog below, and the last stars slipping away.</p></div>
+      </div>
+      <div class="scene" aria-hidden="true">
+        <div class="cube"><div class="face f1">🌙</div><div class="face f2">✦</div><div class="face f3">🔭</div><div class="face f4">☄️</div><div class="face f5">🪐</div><div class="face f6">⛰️</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pad" id="stay">
+  <h2>Everything for a perfect night</h2>
+  <div class="cards">
+    <article class="card"><h3>Dark-sky cabins</h3><p>Warm, minimal rooms with skylight beds and blackout shades.</p></article>
+    <article class="card"><h3>Guided astronomy</h3><p>Small-group sessions led by local stargazers, telescopes provided.</p></article>
+    <article class="card"><h3>Slow mornings</h3><p>Farm breakfasts and short sunrise hikes, with no schedule to rush you.</p></article>
+  </div>
+</section>
+
+<section class="cta" id="book">
+  <h2>Your night sky is waiting</h2>
+  <a class="btn" href="#top">Reserve a cabin</a>
+</section>
+<footer>Nocta is a fictional brand, created as a design and interaction demo by Sofia Marie Isidro. &middot; <a href="../" style="color:inherit">&larr; Back to portfolio</a></footer>
+
+<script>
+(function(){
+  var root=document.documentElement,bar=document.getElementById('bar'),hero=document.querySelector('.hero'),
+      story=document.getElementById('story'),steps=[].slice.call(document.querySelectorAll('.step')),
+      cards=[].slice.call(document.querySelectorAll('.card')),cv=document.getElementById('stars'),ctx=cv.getContext('2d'),
+      stars=[],W=0,H=0,ticking=false,last=-1;
+  function clamp(v){return Math.max(0,Math.min(1,v))}
+  function size(){
+    var d=Math.min(window.devicePixelRatio||1,2);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0);
+    stars=[];for(var i=0;i<180;i++)stars.push({x:Math.random()*W,y:Math.random()*H*.8,r:Math.random()*1.4+.2,t:Math.random()*6.28});
+  }
+  function draw(tm){
+    ctx.clearRect(0,0,W,H);var p=parseFloat(root.style.getPropertyValue('--p'))||0;
+    for(var i=0;i<stars.length;i++){var s=stars[i];ctx.globalAlpha=(.35+.65*Math.abs(Math.sin(tm/900+s.t)))*(1-p*.4);
+      ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(s.x,s.y-p*40*s.r,s.r,0,6.28);ctx.fill()}
+    requestAnimationFrame(draw);
+  }
+  function update(){
+    ticking=false;var y=window.scrollY,vh=window.innerHeight,dh=document.documentElement.scrollHeight-vh;
+    bar.style.transform='scaleX('+(dh>0?clamp(y/dh):0)+')';
+    root.style.setProperty('--p',clamp(y/(hero.offsetHeight-vh)).toFixed(4));
+    var s=clamp((y-story.offsetTop)/(story.offsetHeight-vh));root.style.setProperty('--s',s.toFixed(4));
+    var idx=Math.min(steps.length-1,Math.floor(s*steps.length));
+    if(idx!==last){steps.forEach(function(el,i){el.classList.toggle('on',i===idx)});last=idx}
+  }
+  function req(){if(!ticking){ticking=true;requestAnimationFrame(update)}}
+  window.addEventListener('scroll',req,{passive:true});
+  window.addEventListener('resize',function(){size();req()});
+  size();update();
+  if(!window.matchMedia('(prefers-reduced-motion:reduce)').matches)requestAnimationFrame(draw);
+  else{draw(0)}
+  try{
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.2});
+    cards.forEach(function(c,i){c.style.transitionDelay=(i*120)+'ms';io.observe(c)});
+  }catch(e){cards.forEach(function(c){c.classList.add('in')})}
+})();
+</script>
+</body>
+</html>
